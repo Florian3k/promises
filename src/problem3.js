@@ -5,10 +5,7 @@ module.exports = async function first(proms) {
 		proms = proms.map( (prom) => {
 			return prom
 				.then(resolve)
-				.catch( x => {
-					return Promise.resolve(x);
-				});
-				// .catch(Promise.resolve);
+				.catch(Promise.resolve.bind(Promise));
 		});
 		
 		Promise.all(proms).then(reject);

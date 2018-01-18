@@ -1,0 +1,41 @@
+/* 
+    Napisz funkcję takeFirst(count, ...promises).
+
+    Ma ona zwrócić Promise z tablicą wyników ${count} najszybciej rozwiązanych Promisów. 
+    Jeśli żaden Promise nie zostanie podany, wynikiem powinna być pusta tablica.
+    W przypadku błędu któregoś z nich (jeśli wymagana liczba Promisów jeszcze się nie rozwiązała), 
+    to powinna zwrócić odrzucony Promise z odpowiednim błędem.
+    
+    Przykład:
+
+    const p1 = p.resolveWith(5).after(5) // resolves in 5 sec.
+    const p2 = p.resolveWith(3).after(3) // resolves in 3 sec.
+    const p3 = p.resolveWith(2).after(2) // resolves in 2 sec.
+    const p4 = p.resolveWith(6).after(6) // resolves in 6 sec.
+    const r1 = p.rejectWith(4).after(4) // rejects in 4 sec. 
+
+    takeFirst(2, p1, p2, p3, p4, r1).then(console.log) // [p3, p2, p1]
+
+    takeFirst(2, p1, p4, r1).catch(console.log) // error thrown by r1
+
+*/
+
+const p = require('../utils.js');
+const takeFirst = require('../src/problem4');
+
+describe('problem5', () => {
+
+	it("doesn't reject if a promise rejects after given number of them has been resolved", async () => {
+		const promise1 = p.resolveWith(5).after(5);
+		const promise2 = p.resolveWith(7).after(7);
+		const promise3 = p.resolveWith(8).after(8);
+		const rejectedPromise = p.rejectWith().after(10);
+
+		expect.assertions(1);
+
+		expect(
+			await takeFirst(3, promise1, promise2, promise3, rejectedPromise),
+		).toEqual([5, 7, 8]);
+	});
+
+});
