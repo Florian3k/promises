@@ -25,17 +25,46 @@ const takeFirst = require('../src/problem4');
 
 describe('problem5', () => {
 
-	it("doesn't reject if a promise rejects after given number of them has been resolved", async () => {
+	// it("doesn't reject if a promise rejects after given number of them has been resolved", async () => {
+	// 	const promise1 = p.resolveWith(5).after(5);
+	// 	const promise2 = p.resolveWith(7).after(7);
+	// 	const promise3 = p.resolveWith(8).after(8);
+	// 	const rejectedPromise = p.rejectWith().after(10);
+
+	// 	// expect.assertions(1);
+
+	// 	expect(
+	// 		await takeFirst(3, promise1, promise2, promise3, rejectedPromise),
+	// 	).toEqual([5, 7, 8]);
+	// });
+
+	it('rejects if one of the promises rejects before given number of them has been resolved', async () => {
 		const promise1 = p.resolveWith(5).after(5);
 		const promise2 = p.resolveWith(7).after(7);
-		const promise3 = p.resolveWith(8).after(8);
-		const rejectedPromise = p.rejectWith().after(10);
+		const rejectedPromise = p.rejectWith('boom').after(1);
 
 		expect.assertions(1);
 
-		expect(
-			await takeFirst(3, promise1, promise2, promise3, rejectedPromise),
-		).toEqual([5, 7, 8]);
+		try {
+			await takeFirst(2, promise1, promise2, rejectedPromise);
+		} catch (err) {
+			expect(err).toBe('boom');
+		}
 	});
+
+	it('rejects if one of the promises rejects before given number of them has been resolved', async () => {
+		const promise1 = p.resolveWith(5).after(5);
+		const promise2 = p.resolveWith(7).after(7);
+		const rejectedPromise = p.rejectWith('boom').after(1);
+
+		expect.assertions(1);
+
+		try {
+			await takeFirst(2, promise1, promise2, rejectedPromise);
+		} catch (err) {
+			expect(err).toBe('boom');
+		}
+	});
+
 
 });
