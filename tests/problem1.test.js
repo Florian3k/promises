@@ -16,21 +16,23 @@
  */
 
 const p = require('../utils.js');
+const negation = require('../src/problem1');
 
 describe('problem1', () => {
-    it('negates resolved promises', (done) => {
-        negation(p.resolveWith(1).after(10))
-            .catch(err => {
-                expect(err).toEqual(1);
-                done();
-            })
-    });
+	it('negates resolved promises', (done) => {
+		negation(p.resolveWith(1).after(10))
+			.catch(err => {
+				expect(err).toEqual(1);
+				done();
+			})
+	});
 
-    it('negates rejected promises', (done) => {
-        negation(p.rejectWith(1).after(10))
-            .then(err => {
-                expect(err).toEqual(1);
-                done();
-            });
-    });
+	it('negates rejected promises', (done) => {
+		negation(p.rejectWith(1).after(10))
+			.then(err => {
+				expect(err).toEqual(1);
+				done();
+			});
+	});
 });
+
